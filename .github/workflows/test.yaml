@@ -1,25 +1,32 @@
 name: Tests
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - dev
 
 jobs:
   my-job:
     name: hello-world
-    runs-on: ubuntu-20.04
     steps:
-    - name: Say hello world
-      run: |
-        echo Welcome to the Github Actions workshop !
+      - name: Say hello world
+        run: echo Welcome to the Github Actions workshop !
 
   unit-test:
+    container:
+      image: epitechcontent/epitest-docker
+      options: --cpus 1
     name: unit-test
-    runs-on: ubuntu-20.04
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-    - name: Run unit-test
-      run: |
-        make tests_run
-    - name: Get Coverage
-      run: |
-        make coverage
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - run: mkdir -p path/to/artifact
+      - name: Run unit-test
+        run: make tests_run > path/to/artifact/coverage_outputs.txt
+      - name: Get Coverage
+        run: make coverage >> path/to/artifact/coverage_outputs.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: path/to/artifact/
