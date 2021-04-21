@@ -1,0 +1,12 @@
+name: Tests
+
+on: push
+
+jobs:
+  my-job:
+    name: hello-world
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Say hello world
+      run: |
+        echo Welcome to the Github Actions workshop !
